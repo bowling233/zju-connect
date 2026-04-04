@@ -300,7 +300,7 @@ applyLang();
 // serveCaptchaInBrowser starts a temporary HTTP server to display the captcha
 // image in the user's browser and waits for the user to click on character
 // positions and submit the coordinates.
-func serveCaptchaInBrowser(imgData []byte, timeout time.Duration) (string, error) {
+func serveCaptchaInBrowser(imgData []byte, timeout time.Duration, captchaServerBind string) (string, error) {
 	resultCh := make(chan string, 1)
 
 	mux := http.NewServeMux()
@@ -341,7 +341,11 @@ func serveCaptchaInBrowser(imgData []byte, timeout time.Duration) (string, error
 		}
 	})
 
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	bindAddr := captchaServerBind
+	if bindAddr == "" {
+		bindAddr = "127.0.0.1:0"
+	}
+	listener, err := net.Listen("tcp", bindAddr)
 	if err != nil {
 		return "", fmt.Errorf("failed to start captcha server: %w", err)
 	}

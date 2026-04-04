@@ -124,6 +124,7 @@ func main() {
 			conf.AuthType,
 			conf.GraphCodeFile,
 			conf.CasTicket,
+			conf.CaptchaServerBind,
 			clientData,
 			resourceData,
 			conf.UpdateBestNodesInterval,

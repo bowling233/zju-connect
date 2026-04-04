@@ -75,6 +75,8 @@ volumes:
 
 When first logging in with the aTrust protocol, human verification is required. Use `network_mode: host` and run in interactive mode temporarily:
 
+> **Tip:** If you are on macOS or other systems that do not support `network_mode: host`, you can set `captcha_server_bind = "0.0.0.0:40855"` and map port `40855` to the host (`-p 40855:40855`). This allows completing the captcha verification in a browser on the host without needing host networking.
+
 ```shell
 docker compose run --rm -it zju-connect
 ```

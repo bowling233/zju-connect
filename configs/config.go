@@ -30,6 +30,7 @@ type (
 		DNSHijack          bool
 		FakeIP             bool
 		GraphCodeFile      string
+		CaptchaServerBind  string
 		DebugDump          bool
 
 		// EasyConnect fields
@@ -102,6 +103,7 @@ type (
 		DNSHijack               *bool                      `toml:"dns_hijack"`
 		FakeIP                  *bool                      `toml:"fake_ip"`
 		GraphCodeFile           *string                    `toml:"graph_code_file"`
+		CaptchaServerBind       *string                    `toml:"captcha_server_bind"`
 		DebugDump               *bool                      `toml:"debug_dump"`
 		PortForwarding          []SinglePortForwardingTOML `toml:"port_forwarding"`
 		CustomDNS               []SingleCustomDNSTOML      `toml:"custom_dns"`

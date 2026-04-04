@@ -128,7 +128,7 @@ func (c *Client) NewL3Conn() (io.ReadWriteCloser, error) {
 	return c.l3Tunnel.NewL3Conn()
 }
 
-func (c *Client) Setup(serverAddress string, serverPort int, username, password, phone, loginDomain, authType, graphCodeFile, casTicket string, authData, resourceData []byte, updateBestNodesInterval int) ([]byte, error) {
+func (c *Client) Setup(serverAddress string, serverPort int, username, password, phone, loginDomain, authType, graphCodeFile, casTicket string, captchaServerBind string, authData, resourceData []byte, updateBestNodesInterval int) ([]byte, error) {
 	c.serverAddress = serverAddress
 
 	if c.SID != "" && c.DeviceID != "" && resourceData != nil {
@@ -165,7 +165,7 @@ func (c *Client) Setup(serverAddress string, serverPort int, username, password,
 		sess := auth.NewSession(serverHost)
 
 		var err error
-		c.Username, c.SID, clientAuthData.Cookies, err = sess.Login(username, password, phone, loginDomain, authType, c.DeviceID, graphCodeFile, casTicket, clientAuthData.Cookies)
+		c.Username, c.SID, clientAuthData.Cookies, err = sess.Login(username, password, phone, loginDomain, authType, c.DeviceID, graphCodeFile, casTicket, captchaServerBind, clientAuthData.Cookies)
 		if err != nil {
 			log.Println("Login error:", err)
 			return nil, err

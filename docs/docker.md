@@ -75,6 +75,8 @@ volumes:
 
 使用 aTrust 协议初次登录时需要人工验证，应当使用 `network_mode: host` 和交互模式临时运行：
 
+> **提示：** 如果你使用 macOS 等不支持 `network_mode: host` 的系统，可以设置 `captcha_server_bind = "0.0.0.0:40855"` 并将端口 `40855` 映射到宿主机（`-p 40855:40855`），这样无需 host 网络即可在宿主机浏览器中完成验证码验证。
+
 ```zsh
 docker compose run --rm -it zju-connect
 ```

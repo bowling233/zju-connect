@@ -14,11 +14,11 @@ import (
 	"github.com/mythologyli/zju-connect/log"
 )
 
-func (s *Session) loginAuthPsw(username, password, loginDomain, graphCodeFile string) error {
+func (s *Session) loginAuthPsw(username, password, loginDomain, graphCodeFile, captchaServerBind string) error {
 	process := func(graphCheckCode string) (int, error) {
 		return s.pswImpl(username, password, loginDomain, graphCheckCode)
 	}
-	return s.withGraphCheckCode(process, graphCodeFile)
+	return s.withGraphCheckCode(process, graphCodeFile, captchaServerBind)
 }
 
 func (s *Session) pswImpl(username, password, loginDomain, graphCheckCode string) (int, error) {

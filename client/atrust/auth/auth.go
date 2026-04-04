@@ -109,7 +109,7 @@ func (s *Session) randSdpId(n ...int) string {
 	return string(hexes)
 }
 
-func (s *Session) withGraphCheckCode(process func(string) (int, error), graphCodeFile string) error {
+func (s *Session) withGraphCheckCode(process func(string) (int, error), graphCodeFile, captchaServerBind string) error {
 	graphCheckCodeEnable, err := process("")
 	if err != nil {
 		return err
@@ -144,7 +144,7 @@ func (s *Session) withGraphCheckCode(process func(string) (int, error), graphCod
 				return err
 			}
 		} else {
-			graphCheckCode, err = serveCaptchaInBrowser(imgData, 5*time.Minute)
+			graphCheckCode, err = serveCaptchaInBrowser(imgData, 5*time.Minute, captchaServerBind)
 			if err != nil {
 				return fmt.Errorf("failed to get captcha input: %w", err)
 			}
@@ -175,7 +175,7 @@ func (s *Session) GetAuthInfoList() ([]AuthInfo, error) {
 	return list, err
 }
 
-func (s *Session) Login(username, password, phone, loginDomain, authType, deviceId, graphCodeFile, casTicket string, cookies []Cookie) (string, string, []Cookie, error) {
+func (s *Session) Login(username, password, phone, loginDomain, authType, deviceId, graphCodeFile, casTicket string, captchaServerBind string, cookies []Cookie) (string, string, []Cookie, error) {
 	sid := ""
 	if len(cookies) > 0 {
 		for _, cookie := range cookies {
@@ -219,11 +219,11 @@ func (s *Session) Login(username, password, phone, loginDomain, authType, device
 	log.Printf("Starting login with auth type: %s, login domain: %s", authType, loginDomain)
 	switch authType {
 	case "auth/psw":
-		err = s.loginAuthPsw(username, password, loginDomain, graphCodeFile)
+		err = s.loginAuthPsw(username, password, loginDomain, graphCodeFile, captchaServerBind)
 	case "auth/cas":
 		err = s.loginAuthCas(foundAuthInfo.LoginURL, loginDomain, casTicket)
 	case "auth/smsCheckCode":
-		err = s.loginAuthSmsCheckCode(phone, loginDomain, graphCodeFile)
+		err = s.loginAuthSmsCheckCode(phone, loginDomain, graphCodeFile, captchaServerBind)
 	default:
 		err = fmt.Errorf("unsupported auth type: %s", authType)
 	}

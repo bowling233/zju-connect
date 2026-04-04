@@ -10,11 +10,11 @@ import (
 	"github.com/mythologyli/zju-connect/log"
 )
 
-func (s *Session) loginAuthSmsCheckCode(phone, loginDomain, graphCodeFile string) error {
+func (s *Session) loginAuthSmsCheckCode(phone, loginDomain, graphCodeFile, captchaServerBind string) error {
 	sendSmsProcess := func(graphCheckCode string) (int, error) {
 		return s.sendSms(phone, loginDomain, graphCheckCode)
 	}
-	err := s.withGraphCheckCode(sendSmsProcess, graphCodeFile)
+	err := s.withGraphCheckCode(sendSmsProcess, graphCodeFile, captchaServerBind)
 	if err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func (s *Session) loginAuthSmsCheckCode(phone, loginDomain, graphCodeFile string
 	smsCheckCodeProcess := func(graphCheckCode string) (int, error) {
 		return s.smsCheckCodeImpl(code, phone, loginDomain, graphCheckCode)
 	}
-	return s.withGraphCheckCode(smsCheckCodeProcess, graphCodeFile)
+	return s.withGraphCheckCode(smsCheckCodeProcess, graphCodeFile, captchaServerBind)
 }
 
 func (s *Session) sendSms(phone, loginDomain, graphCheckCode string) (int, error) {
